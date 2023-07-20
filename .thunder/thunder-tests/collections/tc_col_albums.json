@@ -18,6 +18,25 @@
             "headers": [],
             "params": [],
             "tests": []
+        },
+        {
+            "_id": "8ea6663a-0197-45a9-b005-a24613dc3213",
+            "colId": "ff28c637-4190-45c2-8cf8-3d966d0b6aaf",
+            "containerId": "",
+            "name": "Create Album",
+            "url": "http://127.0.0.1:8080/albums",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-07-20T13:21:38.780Z",
+            "modified": "2023-07-20T13:23:53.487Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"Blue Train\",\n  \"artist\": \"John Coltrane\",\n  \"price\": 56.99\n}",
+                "form": []
+            },
+            "tests": []
         }
     ]
 }

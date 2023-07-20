@@ -62,6 +62,18 @@ To list all albums, send a GET request to the `/albums` endpoint:
   },
 ```
 
+#### Create an Album
+
+To create an album, send a POST request to the `/albums` endpoint:
+
+```bash
+  curl http://localhost:8080/albums \
+    --include \
+    --header "Content-Type: application/json" \
+    --request "POST" \
+    --data '{"title": "The Modern Sound of Betty Carter","artist": "Betty Carter","price": 49.99}'
+```
+
 ## Contributing
 
 Contributions are welcome! Please follow the [contribution guidelines](CONTRIBUTING.md).
