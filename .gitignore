@@ -25,3 +25,6 @@ tmp
 
 # Database
 internal/infra/database/*.db
+
+.env*
+!.env.example

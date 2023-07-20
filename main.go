@@ -1,27 +1,17 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"log"
 
-	albumController "github.com/willian2s/web-service-gin/api/controller/album"
+	"github.com/joho/godotenv"
+	"github.com/willian2s/web-service-gin/api/routes"
 )
 
-func Router() *gin.Engine {
-	router := gin.Default()
-
-	album := router.Group("/albums")
-	{
-		album.POST("", albumController.CreateAlbum)
-		album.GET("", albumController.FindMany)
-		album.GET("/:id", albumController.FindOne)
-		album.DELETE("/:id", albumController.Delete)
+func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Some error occured. Err: %s", err)
 	}
 
-	return router
-}
-
-func main() {
-	router := Router()
-
-	router.Run(":8080")
+	routes.Execute()
 }

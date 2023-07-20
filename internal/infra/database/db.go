@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -12,7 +13,7 @@ type Database struct {
 }
 
 func Execute() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "./internal/infra/database/albums.db")
+	db, err := sql.Open("sqlite3", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
