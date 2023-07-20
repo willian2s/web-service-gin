@@ -3,9 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 
-	"github.com/google/uuid"
 	"github.com/willian2s/web-service-gin/internal/entity"
 )
 
@@ -14,27 +12,24 @@ type AlbumRepository struct {
 }
 
 func NewAlbumRepository(db *sql.DB) *AlbumRepository {
-	return &AlbumRepository{Db: db}
-}
-
-type Album struct {
-	ID     string  `json:"id"`
-	Title  string  `json:"title"`
-	Artist string  `json:"artist"`
-	Price  float64 `json:"price"`
-}
-
-var albumsCollection = []Album{
-	{ID: uuid.New().String(), Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
-	{ID: uuid.New().String(), Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
-	{ID: uuid.New().String(), Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
-	{ID: uuid.New().String(), Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
+	return &AlbumRepository{
+		Db: db,
+	}
 }
 
 func (repo *AlbumRepository) Save(album *entity.Album) error {
-	_, err := repo.Db.Exec("INSERT INTO albums (id, title, artist, price) VALUES (?, ?, ?, ?)", albumsCollection[0].ID, albumsCollection[0].Title, albumsCollection[0].Artist, albumsCollection[0].Price)
-
-	fmt.Println("oi")
+	_, err := repo.Db.Exec(`INSERT INTO albums (
+			id,
+			title,
+			artist,
+			price
+			) VALUES (?, ?, ?, ?)
+		`,
+		album.ID,
+		album.Title,
+		album.Artist,
+		album.Price,
+	)
 
 	if err != nil {
 		return err
@@ -48,24 +43,75 @@ func (repo *AlbumRepository) Save(album *entity.Album) error {
 	return nil
 }
 
-func (a *Album) FindMany() []Album {
-	return albumsCollection
+func (repo *AlbumRepository) FindMany() ([]entity.Album, error) {
+	var albums []entity.Album
+	rows, err := repo.Db.Query("SELECT * FROM albums")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var album entity.Album
+		if err := rows.Scan(&album.ID, &album.Title, &album.Artist, &album.Price); err != nil {
+			return nil, err
+		}
+		albums = append(albums, album)
+	}
+
+	err = repo.Db.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	return albums, nil
 }
 
-func (a *Album) FindOne(id string) (*Album, error) {
-	for i, b := range albumsCollection {
-		if b.ID == id {
-			return &albumsCollection[i], nil
-		}
+func (repo *AlbumRepository) FindOne(id string) (*entity.Album, error) {
+	var album entity.Album
+	err := repo.Db.QueryRow("SELECT * FROM albums WHERE id = ?", id).Scan(
+		&album.ID,
+		&album.Title,
+		&album.Artist,
+		&album.Price,
+	)
+
+	if err != nil {
+		return nil, err
 	}
-	return nil, errors.New("album not found")
+
+	err = repo.Db.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	return &album, nil
 }
 
-func (a *Album) Delete(id string) {
-	for i, b := range albumsCollection {
-		if b.ID == id {
-			albumsCollection = append(albumsCollection[:i], albumsCollection[i+1:]...)
-			return
-		}
+func (repo *AlbumRepository) Delete(id string) error {
+	var total int
+	err := repo.Db.QueryRow("SELECT count(*) FROM albums WHERE id = ?", id).Scan(&total)
+	if err != nil {
+		return err
 	}
+
+	if total == 0 {
+		return errors.New("album not found")
+	}
+
+	_, err = repo.Db.Exec("DELETE FROM albums WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	if err != nil {
+		return err
+	}
+
+	err = repo.Db.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

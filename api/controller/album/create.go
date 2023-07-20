@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/willian2s/web-service-gin/internal/infra/database"
-	usecase "github.com/willian2s/web-service-gin/internal/usecase/album"
+	"github.com/willian2s/web-service-gin/internal/usecase"
 )
 
 func CreateAlbum(c *gin.Context) {
@@ -17,7 +17,7 @@ func CreateAlbum(c *gin.Context) {
 		return
 	}
 	repository := database.NewAlbumRepository(db)
-	usecase := usecase.CreateAlbum{
+	usecase := usecase.AlbumUsecase{
 		AlbumRepository: repository,
 	}
 
@@ -25,7 +25,7 @@ func CreateAlbum(c *gin.Context) {
 		return
 	}
 
-	album, err := usecase.Handle(newAlbum)
+	album, err := usecase.Save(newAlbum)
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return

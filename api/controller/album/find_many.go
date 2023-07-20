@@ -5,11 +5,26 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/willian2s/web-service-gin/internal/infra/database"
+	"github.com/willian2s/web-service-gin/internal/usecase"
 )
 
 func FindMany(c *gin.Context) {
+	db, err := database.Execute()
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "internal server error"})
+		return
+	}
 
-	var album database.Album
+	repository := database.NewAlbumRepository(db)
+	usecase := usecase.AlbumUsecase{
+		AlbumRepository: repository,
+	}
 
-	c.IndentedJSON(http.StatusOK, album.FindMany())
+	albums, err := usecase.FindMany()
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, albums)
 }
