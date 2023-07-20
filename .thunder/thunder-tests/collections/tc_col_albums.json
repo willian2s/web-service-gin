@@ -28,14 +28,42 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-07-20T13:21:38.780Z",
-            "modified": "2023-07-20T13:23:53.487Z",
+            "modified": "2023-07-20T19:14:14.924Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"title\": \"Blue Train\",\n  \"artist\": \"John Coltrane\",\n  \"price\": 56.99\n}",
+                "raw": "{\n  \"title\": \"Blue Train\",\n  \"artist\": \"John Coltrane\",\n  \"price\": 1.00\n}",
                 "form": []
             },
+            "tests": []
+        },
+        {
+            "_id": "c650adf5-89a0-457e-ad19-36d59114f1b7",
+            "colId": "ff28c637-4190-45c2-8cf8-3d966d0b6aaf",
+            "containerId": "",
+            "name": "Get Album By Id",
+            "url": "http://127.0.0.1:8080/albums/c5fa3f4e-df39-4ee9-bdf6-4a4cdb624fba",
+            "method": "GET",
+            "sortNum": 15000,
+            "created": "2023-07-20T14:25:28.947Z",
+            "modified": "2023-07-20T19:14:29.523Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e3c82efa-e372-403c-bcb3-e50fe7331eae",
+            "colId": "ff28c637-4190-45c2-8cf8-3d966d0b6aaf",
+            "containerId": "",
+            "name": "Delete Album",
+            "url": "http://127.0.0.1:8080/albums/41f3650d-b8a9-45b1-bc6d-8952d7b55ea8",
+            "method": "DELETE",
+            "sortNum": 17500,
+            "created": "2023-07-20T19:19:36.190Z",
+            "modified": "2023-07-20T19:33:35.515Z",
+            "headers": [],
+            "params": [],
             "tests": []
         }
     ]
