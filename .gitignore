@@ -22,3 +22,6 @@ go.work
 
 temp
 tmp
+
+# Database
+internal/infra/database/*.db

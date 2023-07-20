@@ -1,18 +1,21 @@
 package database
 
 import (
+	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/willian2s/web-service-gin/internal/entity"
 )
 
-// type AlbumRepository struct {
-// 	Db *sql.DB
-// }
+type AlbumRepository struct {
+	Db *sql.DB
+}
 
-// func NewAlbumRepository(db *sql.DB) *AlbumRepository {
-// 	return &AlbumRepository{Db: db}
-// }
+func NewAlbumRepository(db *sql.DB) *AlbumRepository {
+	return &AlbumRepository{Db: db}
+}
 
 type Album struct {
 	ID     string  `json:"id"`
@@ -28,20 +31,21 @@ var albumsCollection = []Album{
 	{ID: uuid.New().String(), Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 }
 
-// func (repo *AlbumRepository) Save(album *entity.Album) error {
-// 	_, err := repo.Db.Exec("INSERT INTO albums (id, title, artist, price) VALUES (?, ?, ?, ?)", albumsCollection[0].ID, albumsCollection[0].Title, albumsCollection[0].Artist, albumsCollection[0].Price)
+func (repo *AlbumRepository) Save(album *entity.Album) error {
+	_, err := repo.Db.Exec("INSERT INTO albums (id, title, artist, price) VALUES (?, ?, ?, ?)", albumsCollection[0].ID, albumsCollection[0].Title, albumsCollection[0].Artist, albumsCollection[0].Price)
 
-// 	if err != nil {
-// 		return err
-// 	}
+	fmt.Println("oi")
 
-// 	return nil
-// }
+	if err != nil {
+		return err
+	}
 
-func (a *Album) Save() {
-	a.ID = uuid.New().String()
+	err = repo.Db.Close()
+	if err != nil {
+		return err
+	}
 
-	albumsCollection = append(albumsCollection, *a)
+	return nil
 }
 
 func (a *Album) FindMany() []Album {

@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"log"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -10,11 +11,28 @@ type Database struct {
 	Db *sql.DB
 }
 
-func Execute() {
-	db, err := sql.Open("sqlite3", "./orders.db")
-
+func Execute() (*sql.DB, error) {
+	db, err := sql.Open("sqlite3", "./internal/infra/database/albums.db")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
+		return nil, err
 	}
-	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+
+	db.Exec(
+		`CREATE TABLE IF NOT EXISTS albums (
+			id varchar(255) NOT NULL,
+			title varchar(255) NOT NULL,
+			artist varchar(255) NOT NULL,
+			price float NOT NULL,
+			PRIMARY KEY (id)
+		)`,
+	)
+
+	return db, nil
 }
