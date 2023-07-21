@@ -14,6 +14,7 @@ func FindMany(c *gin.Context) {
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "internal server error"})
 		return
 	}
+	defer db.Close()
 
 	repository := database.NewAlbumRepository(db)
 	usecase := usecase.AlbumUsecase{

@@ -35,10 +35,10 @@ func (repo *AlbumRepository) Save(album *entity.Album) error {
 		return err
 	}
 
-	err = repo.Db.Close()
-	if err != nil {
-		return err
-	}
+	// err = repo.Db.Close()
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
@@ -59,10 +59,10 @@ func (repo *AlbumRepository) FindMany() ([]entity.Album, error) {
 		albums = append(albums, album)
 	}
 
-	err = repo.Db.Close()
-	if err != nil {
-		return nil, err
-	}
+	// err = repo.Db.Close()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return albums, nil
 }
@@ -80,10 +80,10 @@ func (repo *AlbumRepository) FindOne(id string) (*entity.Album, error) {
 		return nil, err
 	}
 
-	err = repo.Db.Close()
-	if err != nil {
-		return nil, err
-	}
+	// err = repo.Db.Close()
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return &album, nil
 }
@@ -108,10 +108,10 @@ func (repo *AlbumRepository) Delete(id string) error {
 		return err
 	}
 
-	err = repo.Db.Close()
-	if err != nil {
-		return err
-	}
+	// err = repo.Db.Close()
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
